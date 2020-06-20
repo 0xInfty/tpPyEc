@@ -1,7 +1,16 @@
 #####################################
-# TP Probabilidad y Estad??stica (C) #
+# TP Probabilidad y Estadística (C) #
 #                                   #
-#          Inciso a                 #
+#          Inciso 1a                #
 #####################################
 
-x1...x1000 <- runif(1000, min=0, max=1)
+# Sample
+x1...x1000 <- runif(1000)
+
+# Histogram
+hist(x1...x1000,
+     freq = FALSE,
+     main = "Histograma de muestra uniforme",
+     xlab = "Muestra x1...x1000", 
+     ylab = "Densidad",
+     col = "#66B2FF")
