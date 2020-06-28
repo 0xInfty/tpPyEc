@@ -24,7 +24,7 @@ varianza <- function(x) { # Calcula la varianza muestral
 }
 
 
-# Item a
+#################### ITEM A ####################
 
 set.seed(0) # Un seed para cada item (a = 0, b = 1, ...)
 
@@ -41,7 +41,7 @@ abline(h = 1, col = "red") # Comparo con la densidad de una U[0,1]
 
 #text(0.25, 1.05, "f(x)=1/(1-0)=1", col = "red") # (si conoces una mejor forma de presentar a la densidad teórica en el gráfico mejor, porque queda medio feo esto)
 
-# Item b
+#################### ITEM B ####################
 
 set.seed(1)
 
@@ -55,7 +55,7 @@ hb <- hist(b,
            col = "#66B2FF")
 
 
-# Item c
+#################### ITEM C ####################
 
 set.seed(2)
 
@@ -90,7 +90,7 @@ abline(col = "red", h = max(hc$density))
 par(mfrow = c(1, 1)) # Reestablezco la ventana gráfica para volver a tener un gráfico a la vez
 
 
-# Item d
+#################### ITEM D ####################
 
 set.seed(3)
 
@@ -124,7 +124,7 @@ abline(col = "red", h = max(hd$density))
 
 par(mfrow = c(1, 1))
 
-# Item e
+#################### ITEM E ####################
 
 set.seed(4)
 
@@ -172,7 +172,7 @@ par(mfrow = c(1, 1))
 # (o proponer un estudio diferente :P)
 
 
-# Item f
+#################### ITEM F ####################
 
 set.seed(5)
 
@@ -205,6 +205,16 @@ hf <- hist(f,
 abline(col = "red", h = max(hf$density))
 
 par(mfrow = c(1, 1))
+
+# Grafico los boxplots
+
+datos_uniformes <- data.frame(a,b,c,d,e,f)
+
+colnames(datos_uniformes) <- c("n=1", "n=2", "n=5", "n=30", "n=500", "n=1200")
+
+boxplot(datos_uniformes, main = "Boxplots de promedios de U[0,1]")
+
+abline(col = "red", h = 0.5)
 
 # Calculemos la media y varianza muestral para cada conjunto de datos
 
