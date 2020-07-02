@@ -41,6 +41,7 @@ abline(h = 1, col = "red") # Comparo con la densidad de una U[0,1]
 
 #text(0.25, 1.05, "f(x)=1/(1-0)=1", col = "red") # (si conoces una mejor forma de presentar a la densidad teórica en el gráfico mejor, porque queda medio feo esto)
 
+
 #################### ITEM B ####################
 
 set.seed(1)
@@ -69,7 +70,7 @@ hb <- hist(b,
            xlab = "Muestra x1...x1000",
            ylab = "Densidad",
            col = "#66B2FF",
-           xlim = c(0,1),
+           xlim = c(0, 1),
            breaks = seq(0, 1, by = 0.1),
            ylim = c(0, 3)) # El 3 fue puesto luego de ver el valor máximo que alcanzaba el histograma
 
@@ -81,7 +82,7 @@ hc <- hist(c,
            xlab = "Muestra x1...x1000",
            ylab = "Densidad",
            col = "#66B2FF",
-           xlim = c(0,1),
+           xlim = c(0, 1),
            breaks = seq(0, 1, by = 0.1),
            ylim = c(0, 3)) # El 3 fue puesto luego de ver el valor máximo que alcanzaba el histograma
 
@@ -104,7 +105,7 @@ hc <- hist(c,
            xlab = "Muestra x1...x1000",
            ylab = "Densidad",
            col = "#66B2FF",
-           xlim = c(0,1),
+           xlim = c(0, 1),
            breaks = seq(0, 1, by = 0.05),
            ylim = c(0, 7))
 
@@ -116,13 +117,14 @@ hd <- hist(d,
            xlab = "Muestra x1...x1000",
            ylab = "Densidad",
            col = "#66B2FF",
-           xlim = c(0,1),
+           xlim = c(0, 1),
            breaks = seq(0, 1, by = 0.05),
            ylim = c(0, 7))
 
 abline(col = "red", h = max(hd$density))
 
 par(mfrow = c(1, 1))
+
 
 #################### ITEM E ####################
 
@@ -158,18 +160,66 @@ abline(col = "red", h = max(he$density))
 
 par(mfrow = c(1, 1))
 
-# Ahora comparamos distintos tamaños de muestras con los promedios fijos (comparar con histogramas y/o con boxplots, pensar eso)
+# Ahora comparamos distintos tamaños de muestras con los promedios fijos (con histogramas y con boxplots)
 
-# par(mfrow = c(1, 2)) # Divido el gráfico en dos columnas para comparar los boxplots
-# par(mfrow = c(2, 1)) # Divido el gráfico en dos filas para comparar los histogramas
+mayores1 <- e
+mayores2 <- generar_promedios_uniformes(500, 2000)
+mayores3 <- generar_promedios_uniformes(500, 4000)
+mayores4 <- generar_promedios_uniformes(500, 8000)
+mayores5 <- generar_promedios_uniformes(500, 16000)
+mayores6 <- generar_promedios_uniformes(500, 32000)
 
-# 1000 muestras de promedio de 500 (el primero que pidieron)
-# 2000 muestras de promedio de 500
-# 4000 muestras de promedio de 500
-# 8000 muestras de promedio de 500
-# 16000 muestras de promedio de 500
+mayores <- data.frame(mayores1, mayores2, mayores3, mayores4, mayores5, mayores6)
 
-# (o proponer un estudio diferente :P)
+colnames(mayores) <- c("m=1000", "m=2000", "m=4000", "m=8000", "m=16000", "m=32000")
+
+par(mfrow = c(2, 3))
+
+# Ponerles color, titulo y nombre a los ejes de los histogramas
+hist(mayores1, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
+hist(mayores3, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
+hist(mayores5, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
+hist(mayores2, freq = F, ylim =c (0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
+hist(mayores4, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
+hist(mayores6, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
+
+par(mfrow = c(1, 1))
+
+boxplot(mayores)
+
+# No se si sirven estas lineas.. pero bueno xD
+abline(col = "red", h = 0.49)
+abline(col = "red", h = 0.5)
+abline(col = "red", h = 0.51)
+
+# Desde 1000 en adelante los histogramas son similares, si vamos a los boxplots son similares, pero los de mayor numero de muestras contienen más outliers, lo cual es obvio ya que mientras más muestras se tomen, mayor es la cantidad de datos que se pueden salir de los parámetros normales.
+
+# Pero veamos que ocurre con muestras desde 5 hasta 1000:
+
+menores1 <- generar_promedios_uniformes(500, 5)
+menores2 <- generar_promedios_uniformes(500, 10)
+menores3 <- generar_promedios_uniformes(500, 50)
+menores4 <- generar_promedios_uniformes(500, 100)
+menores5 <- generar_promedios_uniformes(500, 500)
+menores6 <- generar_promedios_uniformes(500, 1000)
+
+par(mfrow = c(2, 3))
+
+# Ponerles color, titulo y nombre a los ejes de los histogramas
+hist(menores1, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+hist(menores2, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+hist(menores3, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+hist(menores4, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+hist(menores5, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+hist(menores6, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+
+menores <- data.frame(menores1, menores2, menores3, menores4, menores5, menores6)
+
+colnames(menores) <- c("m=5", "m=10", "m=50", "m=100", "m=500", "m=1000")
+
+par(mfrow = c(1, 1))
+
+boxplot(menores)
 
 
 #################### ITEM F ####################
