@@ -315,7 +315,40 @@ d_n <- normalizar(d, 30)
 e_n <- normalizar(e, 500)
 f_n <- normalizar(f, 1200)
 
-# FALTA HACER GRAFICOS ENTRE CADA CONJUNTO Y SU RESPECTIVO NORMALIZADO, TANTO LOS HISTOGRAMAS COMO LOS BOXPLOTS
+par(mfrow = c(2, 3))
+
+# Comparo los histogramas de las estandarizaciones contra la N(0,1)
+
+# Le puse au a la variable ('a' del item, y 'u' de que vino de las uniformes, porque despues tenemos las que vienen de las cauchys)
+hist(a_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=1 normalizado", xlab = "au1...au1000", ylab = "Densidad", col = "#66B2FF")
+curve(col = "red", dnorm(x), add = T)
+
+hist(b_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=2 normalizado", xlab = "bu1...bu1000", ylab = "Densidad", col = "#66B2FF")
+curve(col = "red", dnorm(x), add = T)
+
+hist(c_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=5 normalizado", xlab = "cu1...cu1000", ylab = "Densidad", col = "#66B2FF")
+curve(col = "red", dnorm(x), add = T)
+
+hist(d_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=30 normalizado", xlab = "du1...du1000", ylab = "Densidad", col = "#66B2FF")
+curve(col = "red", dnorm(x), add = T)
+
+hist(e_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=500 normalizado", xlab = "eu1...eu1000", ylab = "Densidad", col = "#66B2FF")
+curve(col = "red", dnorm(x), add = T)
+
+hist(f_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=1200 normalizado", xlab = "fu1...fu1000", ylab = "Densidad", col = "#66B2FF")
+curve(col = "red", dnorm(x), add = T)
+
+par(mfrow=c(1, 1))
+
+normal_posta <- rnorm(1000) # Genero una muestra de N(0,1) para comparar con las estandarizaciones pero ahora con boxplots
+
+uniformes_normalizadas <- data.frame(normal_posta, a_n, b_n, c_n, d_n, e_n, f_n)
+colnames(uniformes_normalizadas) <- c("normal", "n=1", "n=2", "n=5", "n=30", "n=500", "n=1200")
+
+boxplot(uniformes_normalizadas, col = c("yellow", rep("#66B2FF", times = 6)), main = "Boxplot Normal vs Estandarizaciones")
+abline(col = "red", h= 0.6744898) # tercer cuartil de N(0,1)
+abline(col = "red", h= -0.6744898) # primer cuartil de N(0,1)
+abline(col = "red", h= 0) # segundo cuartil - mediana de N(0,1)
 
 #################### ITEM H ####################
 
