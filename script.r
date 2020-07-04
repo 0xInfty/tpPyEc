@@ -19,8 +19,12 @@ generar_promedios_cauchy <- function(n, size) { # Genera un vector de size prome
   sapply(rep(n, times = size), promedio_n, gen = rcauchy)
 }
 
-varianza <- function(x) { # Calcula la varianza muestral
-  mean(x^2)-mean(x)^2
+varianza <- function(x) { # Calcula la varianza muestral insesgada S^2
+  sum((x-mean(x))^2)/(length(x)-1)
+}
+
+normalizar <- function(x, n) { # Normaliza los promedios de n U[0,1]
+  (x-0.5)/sqrt(1/(12*n)) # 0.5 es la esperanza de una U[0,1] y 1/12 es su respectiva varianza
 }
 
 
@@ -300,4 +304,21 @@ qqnorm(e, main = "QQPlot Normal n=500", ylim = c(0.3, 0.7))
 qqnorm(f, main = "QQPlot Normal n=1200", ylim = c(0.3, 0.7))
 
 par(mfrow = c(1, 1))
+
+#################### ITEM G ####################
+
+# Normalizo los 6 conjuntos de datos
+a_n <- normalizar(a, 1)
+b_n <- normalizar(b, 2)
+c_n <- normalizar(c, 5)
+d_n <- normalizar(d, 30)
+e_n <- normalizar(e, 500)
+f_n <- normalizar(f, 1200)
+
+# FALTA HACER GRAFICOS ENTRE CADA CONJUNTO Y SU RESPECTIVO NORMALIZADO, TANTO LOS HISTOGRAMAS COMO LOS BOXPLOTS
+
+#################### ITEM H ####################
+
+# FALTA HACER TODOS LOS PUNTOS DESDE EL a HASTA EL f CON LA DENSIDAD DE CAUCHY, EL PUNTO g NO TIENE SENTIDO YA QUE LA CAUCHY NO CUENTA CON ESPERANZA NI VARIANZA FINITAS.
+# YA HAY FUNCION PARA GENERAR LAS CAUCHYS (ESTÁ EN LAS FUNCIONES AUXILIARES), ASÍ QUE RESTA GENERAR CON ESA FUNCION LOS PROMEDIOS QUE PIDEN, HACER LOS GRAFICOS Y COMPARAR.
 
