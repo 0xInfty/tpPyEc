@@ -71,7 +71,7 @@ b.df = data.frame("data" = b)
 # Now plot histogram
 hb <- ggplot(b.df, aes(x=data, after_stat(density)))
 hb + geom_histogram(breaks=seq(0,1,.1),
-                    fill=I("#66B2FF"), 
+                    fill=I("#d26df7"), 
                     col=I("black"),
                     alpha=I(.4)) +
   ggtitle(TeX("Histograma de promedio $\\bar{X}_{2}$ de muestra uniforme $X_1,X_2$")) +
@@ -85,35 +85,38 @@ hb + geom_histogram(breaks=seq(0,1,.1),
 
 set.seed(2)
 
+# Sample
 c <- generar_promedios_uniformes(5, 1000)
 
-par(mfrow = c(2, 1)) # Divido la pantalla en dos filas para comparar los histogramas
+# Make data frames :)
+c.df = data.frame("data" = c)
+cd.df = data.frame(Tama�o = factor(rep(c("2","5"), each=1000)), 
+                   data = c(b,c))
 
-hb <- hist(b,
-           freq = FALSE,
-           main = "Histograma de promedio de dos uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(0, 1),
-           breaks = seq(0, 1, by = 0.1),
-           ylim = c(0, 3)) # El 3 fue puesto luego de ver el valor máximo que alcanzaba el histograma
+# Now plot histogram
+hc <- ggplot(c.df, aes(x=data, after_stat(density)))
+hc + geom_histogram(breaks=seq(0,1,.1),
+                    fill=I("#bb00ff"), 
+                    col=I("black"),
+                    alpha=I(.4)) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{5}$ de muestra uniforme $X_1,...,X_5$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $\\bar{X}_5_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
+  geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
+  scale_x_continuous(limits=c(-.1,1.1)) +
+  annotate("text", x=0.1, y=1.1, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
-abline(col = "red", h = max(hb$density))
-
-hc <- hist(c,
-           freq = FALSE,
-           main = "Histograma de promedio de cinco uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(0, 1),
-           breaks = seq(0, 1, by = 0.1),
-           ylim = c(0, 3)) # El 3 fue puesto luego de ver el valor máximo que alcanzaba el histograma
-
-abline(col = "red", h = max(hc$density))
-
-par(mfrow = c(1, 1)) # Reestablezco la ventana gráfica para volver a tener un gráfico a la vez
+# Make one plot with both histograms
+hcb <- ggplot(cd.df, aes(x=data, fill=Tama�o, after_stat(density)))
+hcb + geom_histogram(breaks=seq(0,1,.1),
+                     col=I("black"),
+                     position="dodge",
+                     alpha=I(.4)) +
+  scale_fill_manual(values=c("#d26df7", "#bb00ff")) +
+  ggtitle(TeX("Histograma de promedios $\\bar{X}_{2},\\bar{X}_{5}$ de muestras uniformes $X_i$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestras $\\\\bar{X}_{2}_i,\\, \\bar{X}_{5}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") +
+  scale_x_continuous(limits=c(-.1,1.1))
 
 
 #################### ITEM D ####################
