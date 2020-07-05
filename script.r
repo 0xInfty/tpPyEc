@@ -90,7 +90,7 @@ c <- generar_promedios_uniformes(5, 1000)
 
 # Make data frames :)
 c.df = data.frame("data" = c)
-cd.df = data.frame(Tamaño = factor(rep(c("2","5"), each=1000)), 
+cb.df = data.frame(Tamaño = factor(rep(c("2","5"), each=1000)), 
                    data = c(b,c))
 
 # Now plot histogram
@@ -107,7 +107,7 @@ hc + geom_histogram(breaks=seq(0,1,.1),
   annotate("text", x=0.1, y=1.1, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
 # Make one plot with both histograms
-hcb <- ggplot(cd.df, aes(x=data, fill=Tamaño, after_stat(density)))
+hcb <- ggplot(cb.df, aes(x=data, fill=Tamaño, after_stat(density)))
 hcb + geom_histogram(breaks=seq(0,1,.1),
                      col=I("black"),
                      position="dodge",
@@ -123,35 +123,38 @@ hcb + geom_histogram(breaks=seq(0,1,.1),
 
 set.seed(3)
 
+# Sample
 d <- generar_promedios_uniformes(30, 1000)
 
-par(mfrow = c(2, 1))
+# Make data frames :)
+d.df = data.frame("data" = d)
+dcb.df = data.frame(Tamaño = factor(rep(c("2","5", "30"), each=1000)), 
+                   data = c(b,c,d))
 
-hc <- hist(c,
-           freq = FALSE,
-           main = "Histograma de promedio de cinco uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(0, 1),
-           breaks = seq(0, 1, by = 0.05),
-           ylim = c(0, 7))
+# Now plot histogram
+hd <- ggplot(d.df, aes(x=data, after_stat(density)))
+hd + geom_histogram(breaks=seq(0,1,.1),
+                    fill=I("#8900c4"), 
+                    col=I("black"),
+                    alpha=I(.4)) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{5}$ de muestra uniforme $X_1,...,X_5$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $\\bar{X}_5_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
+  geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
+  scale_x_continuous(limits=c(-.1,1.1)) +
+  annotate("text", x=0.1, y=1.1, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
-abline(col = "red", h = max(hc$density))
-
-hd <- hist(d,
-           freq = FALSE,
-           main = "Histograma de promedio de treinta uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(0, 1),
-           breaks = seq(0, 1, by = 0.05),
-           ylim = c(0, 7))
-
-abline(col = "red", h = max(hd$density))
-
-par(mfrow = c(1, 1))
+# Make one plot with all histograms
+hdcb <- ggplot(dcb.df, aes(x=data, fill=Tamaño, after_stat(density)))
+hdcb + geom_histogram(breaks=seq(0,1,.1),
+                     col=I("black"),
+                     position="dodge",
+                     alpha=I(.4)) +
+  scale_fill_manual(values=c("#d26df7", "#bb00ff", "#8900c4")) +
+  ggtitle(TeX("Histograma de promedios $\\bar{X}_{2},\\bar{X}_{5}, \\bar{X}_{30}$ de muestras uniformes $X_i$")) +
+  theme(plot.title = element_text(hjust = 0.5), legend.position=c(0.85,0.85)) +
+  labs(x=TeX("Muestras $\\\\bar{X}_{2}_i,\\, \\bar{X}_{5}_i\\, \\bar{X}_{30}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") +
+  scale_x_continuous(limits=c(-.1,1.1))
 
 
 #################### ITEM E ####################
