@@ -340,6 +340,7 @@ curve(col = "red", dnorm(x), add = T)
 
 par(mfrow=c(1, 1))
 
+set.seed(7)
 normal_posta <- rnorm(1000) # Genero una muestra de N(0,1) para comparar con las estandarizaciones pero ahora con boxplots
 
 uniformes_normalizadas <- data.frame(normal_posta, a_n, b_n, c_n, d_n, e_n, f_n)
@@ -352,6 +353,87 @@ abline(col = "red", h= 0) # segundo cuartil - mediana de N(0,1)
 
 #################### ITEM H ####################
 
-# FALTA HACER TODOS LOS PUNTOS DESDE EL a HASTA EL f CON LA DENSIDAD DE CAUCHY, EL PUNTO g NO TIENE SENTIDO YA QUE LA CAUCHY NO CUENTA CON ESPERANZA NI VARIANZA FINITAS.
+# FALTA HACER EL e Y EL f CON LA DENSIDAD DE CAUCHY, EL PUNTO g NO TIENE SENTIDO YA QUE LA CAUCHY NO CUENTA CON ESPERANZA NI VARIANZA FINITAS.
 # YA HAY FUNCION PARA GENERAR LAS CAUCHYS (ESTÁ EN LAS FUNCIONES AUXILIARES), ASÍ QUE RESTA GENERAR CON ESA FUNCION LOS PROMEDIOS QUE PIDEN, HACER LOS GRAFICOS Y COMPARAR.
+
+set.seed(8)
+
+ca <- generar_promedios_cauchy(1, 1000)
+
+hca <- hist(ca,
+           freq = FALSE,
+           main = "Histograma de muestra cauchy",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF")
+curve(dcauchy(x), add=T, col="red")
+
+
+set.seed(9)
+
+cb <- generar_promedios_cauchy(2, 1000)
+
+hcb <- hist(cb,
+           freq = FALSE,
+           main = "Histograma de promedio de dos cauchy",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF")
+
+
+set.seed(10)
+
+cc <- generar_promedios_cauchy(5, 1000)
+
+par(mfrow = c(1, 2)) # Divido la pantalla en dos filas para comparar los histogramas
+
+hcb <- hist(cb,
+           freq = FALSE,
+           main = "Histograma de promedio de dos cauchy",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF",
+           xlim = c(-400, 200)
+           )
+
+abline(col = "red", h = max(hcb$density))
+
+hcc <- hist(cc,
+           freq = FALSE,
+           main = "Histograma de promedio de cinco cauchy",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF",
+           xlim = c(-400, 200)
+           )
+
+abline(col = "red", h = max(hcc$density))
+
+
+
+set.seed(11)
+
+cd <- generar_promedios_cauchy(30, 1000)
+
+par(mfrow = c(1, 2))
+
+hcc <- hist(cc,
+           freq = FALSE,
+           main = "Histograma de promedio de cinco cauchy",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF",
+           xlim = c(-600, 400),
+           ylim = c(0, 0.01))
+
+
+hcd <- hist(cd,
+           freq = FALSE,
+           main = "Histograma de promedio de treinta cauchy",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF",
+           xlim = c(-600, 400),
+           ylim = c(0, 0.01))
+
 
