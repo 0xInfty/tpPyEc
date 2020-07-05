@@ -114,7 +114,7 @@ hcb + geom_histogram(breaks=seq(0,1,.1),
                      alpha=I(.4)) +
   scale_fill_manual(values=c("#d26df7", "#bb00ff")) +
   ggtitle(TeX("Histograma de promedios $\\bar{X}_{2},\\bar{X}_{5}$ de muestras uniformes $X_i$")) +
-  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.title = element_text(hjust = 0.5), legend.position=c(0.85,0.85)) +
   labs(x=TeX("Muestras $\\\\bar{X}_{2}_i,\\, \\bar{X}_{5}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") +
   scale_x_continuous(limits=c(-.1,1.1))
 
