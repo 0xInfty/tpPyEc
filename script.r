@@ -77,7 +77,9 @@ hb + geom_histogram(breaks=seq(0,1,.1),
   ggtitle(TeX("Histograma de promedio $\\bar{X}_2$ de muestra uniforme $X_1,X_2$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
   labs(x=TeX("Muestra $\\bar{X}_2_i$"), y="Densidad") + 
-  scale_x_continuous(limits=c(-.1,1.1))
+  geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
+  scale_x_continuous(limits=c(-.1,1.1)) +
+  annotate("text", x=0.2, y=1.1, label=TeX("$f(x)\\,=\\,\\frac{1}{1\\,-\\,0} \\, $I$_{[0,1]}(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
 #################### ITEM C ####################
 
