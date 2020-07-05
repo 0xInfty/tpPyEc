@@ -46,32 +46,38 @@ a.density <- data.frame("density.x" = c(-0.1,0,1,1.1),
                         "density.y" = c(0,1,0,0))
 
 # Now plot histogram
-ggplot(a.df, aes(x=data, after_stat(density))) +
-  geom_histogram(breaks=seq(0,1,.1),
+ha <- ggplot(a.df, aes(x=data, after_stat(density)))
+ha + geom_histogram(breaks=seq(0,1,.1),
                  fill=I("#66B2FF"), 
-                 col=I("black"), 
+                 col=I("black"),
                  alpha=I(.4)) +
-  ggtitle("Histograma de muestra uniforme") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $x_1...x_{1000}$"), y="Densidad") + 
-  geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
-  scale_x_continuous(limits=c(-.1,1.1)) +
-  annotate("text", x=.8, y=1.14, label=TeX("$f(x)\\,=\\,\\frac{1}{1\\,-\\,0}\\,=\\,1$"), col="red")
-
+     ggtitle(TeX("Histograma de muestra uniforme $X_i$")) +
+     theme(plot.title = element_text(hjust = 0.5)) +
+     labs(x=TeX("Muestra $X_i$"), y="Densidad") + 
+     geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
+     scale_x_continuous(limits=c(-.1,1.1)) +
+     annotate("text", x=0.2, y=1.1, label=TeX("$f(x)\\,=\\,\\frac{1}{1\\,-\\,0} \\, $I$_{[0,1]}(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
 #################### ITEM B ####################
 
 set.seed(1)
 
+# Sample
 b <- generar_promedios_uniformes(2, 1000)
 
-hb <- hist(b,
-           freq = FALSE,
-           main = "Histograma de promedio de dos uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF")
+# Make data frames :)
+b.df = data.frame("data" = b)
 
+# Now plot histogram
+hb <- ggplot(b.df, aes(x=data, after_stat(density)))
+hb + geom_histogram(breaks=seq(0,1,.1),
+                    fill=I("#66B2FF"), 
+                    col=I("black"),
+                    alpha=I(.4)) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_2$ de muestra uniforme $X_1,X_2$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $\\bar{X}_2_i$"), y="Densidad") + 
+  scale_x_continuous(limits=c(-.1,1.1))
 
 #################### ITEM C ####################
 
