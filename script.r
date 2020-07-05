@@ -51,9 +51,9 @@ ha + geom_histogram(breaks=seq(0,1,.1),
                  fill=I("#66B2FF"), 
                  col=I("black"),
                  alpha=I(.4)) +
-     ggtitle(TeX("Histograma de muestra uniforme $X_i$")) +
+     ggtitle(TeX("Histograma de muestra uniforme $X_1,...X_{1000}$")) +
      theme(plot.title = element_text(hjust = 0.5)) +
-     labs(x=TeX("Muestra $X_i$"), y="Densidad") + 
+     labs(x=TeX("Muestra $X_i \\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
      geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
      scale_x_continuous(limits=c(-.1,1.1)) +
      annotate("text", x=0.2, y=1.1, label=TeX("$f(x)\\,=\\,\\frac{1}{1\\,-\\,0} \\, $I$_{[0,1]}(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
@@ -74,12 +74,12 @@ hb + geom_histogram(breaks=seq(0,1,.1),
                     fill=I("#66B2FF"), 
                     col=I("black"),
                     alpha=I(.4)) +
-  ggtitle(TeX("Histograma de promedio $\\bar{X}_2$ de muestra uniforme $X_1,X_2$")) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{2}$ de muestra uniforme $X_1,X_2$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $\\bar{X}_2_i$"), y="Densidad") + 
+  labs(x=TeX("Muestra $\\bar{X}_2_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
   geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
   scale_x_continuous(limits=c(-.1,1.1)) +
-  annotate("text", x=0.2, y=1.1, label=TeX("$f(x)\\,=\\,\\frac{1}{1\\,-\\,0} \\, $I$_{[0,1]}(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
+  annotate("text", x=0.1, y=1.1, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
 #################### ITEM C ####################
 
