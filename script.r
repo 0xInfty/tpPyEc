@@ -4,6 +4,11 @@
 
 # Dejar al menos un espacio al final del script para que al copiar y pegar en la consola del R se ejecuten todos los comandos :)
 
+# Librer�as
+
+library(latex2exp)
+library(ggplot2)
+
 # Funciones Auxiliares
 
 promedio_n <- function(n, gen) { # Calcula el promedio de n realizaciones de una variable aleatoria con distribución gen
@@ -32,18 +37,26 @@ normalizar <- function(x, n) { # Normaliza los promedios de n U[0,1]
 
 set.seed(0) # Un seed para cada item (a = 0, b = 1, ...)
 
+# Generate sample
 a <- generar_promedios_uniformes(1, 1000)
 
-ha <- hist(a,
-           freq = FALSE,
-           main = "Histograma de muestra uniforme",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF")
+# Make data frames :)
+a.df = data.frame("data" = a)
+a.density <- data.frame("density.x" = c(-0.1,0,1,1.1),
+                        "density.y" = c(0,1,0,0))
 
-abline(h = 1, col = "red") # Comparo con la densidad de una U[0,1]
-
-#text(0.25, 1.05, "f(x)=1/(1-0)=1", col = "red") # (si conoces una mejor forma de presentar a la densidad teórica en el gráfico mejor, porque queda medio feo esto)
+# Now plot histogram
+ggplot(a.df, aes(x=data, after_stat(density))) +
+  geom_histogram(breaks=seq(0,1,.1),
+                 fill=I("#66B2FF"), 
+                 col=I("black"), 
+                 alpha=I(.4)) +
+  ggtitle("Histograma de muestra uniforme") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $x_1...x_{1000}$"), y="Densidad") + 
+  geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
+  scale_x_continuous(limits=c(-.1,1.1)) +
+  annotate("text", x=.8, y=1.14, label=TeX("$f(x)\\,=\\,\\frac{1}{1\\,-\\,0}\\,=\\,1$"), col="red")
 
 
 #################### ITEM B ####################
