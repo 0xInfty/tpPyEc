@@ -394,6 +394,28 @@ d_n <- normalizar(d, 30)
 e_n <- normalizar(e, 500)
 f_n <- normalizar(f, 1200)
 
+# Make data.frame
+g.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)), 
+                  sizeStr = factor(rep(c("1","2","5","30","500","1200"), each=1000)), 
+                  data = c(a_n,b_n,c_n,d_n,e_n,f_n))
+norm.df = data.frame(x = rep(seq(-4, 4, length.out=1000),6),
+                     y = rep(dnorm(seq(-4, 4, length.out=1000)),6),
+                     size = factor(rep(c(1,2,5,30,500,1200), each=1000)),
+                     line.size = rep(rep(1, length(seq(-4,4,length.out=1000))),6))
+
+# Now plot histograms in several subplots with the same scale
+hg <- ggplot(g.df, aes(x=data, fill=size, after_stat(density)))
+hg + geom_histogram(breaks=seq(-4, 4, 0.5),
+                      col=I("black"),
+                      alpha=I(.4)) +
+  facet_grid(. ~ size) +
+  scale_fill_brewer(palette="YlOrRd") +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
+  theme(plot.title = element_text(hjust = 0.3)) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  geom_line(norm.df, mapping=aes(x=x, y=y, group=size), color='purple', size=1.5, alpha=0.8)
+# Save with width 888, height 350 :)
+
 par(mfrow = c(2, 3))
 
 # Comparo los histogramas de las estandarizaciones contra la N(0,1)
