@@ -137,9 +137,9 @@ hd + geom_histogram(breaks=seq(0,1,.05),
                     fill=I("#d26df7"), 
                     col=I("black"),
                     alpha=I(.4)) +
-  ggtitle(TeX("Histograma de promedio $\\bar{X}_{5}$ de muestra uniforme $X_1,...,X_5$")) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{30}$ de muestra uniforme $X_1,...,X_{30}$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $\\bar{X}_5_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
+  labs(x=TeX("Muestra $\\bar{X}_{30}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
   geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
   scale_x_continuous(limits=c(-.1,1.1)) +
   annotate("text", x=0.1, y=1.3, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
@@ -172,13 +172,13 @@ edcb.df = data.frame(Tamaño = factor(rep(c(2,5,30,500), each=1000)),
 
 # Now plot histogram
 he <- ggplot(e.df, aes(x=data, after_stat(density)))
-he + geom_histogram(breaks=seq(0,1,.05),
+he + geom_histogram(breaks=seq(0,1,.1),
                     fill=I("#d26df7"), 
                     col=I("black"),
                     alpha=I(.4)) +
-  ggtitle(TeX("Histograma de promedio $\\bar{X}_{5}$ de muestra uniforme $X_1,...,X_5$")) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $\\bar{X}_5_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
   geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
   scale_x_continuous(limits=c(-.1,1.1)) +
   annotate("text", x=0.1, y=1.3, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
@@ -190,15 +190,16 @@ hedcb + geom_histogram(breaks=seq(0,1,.1),
                        position="dodge",
                        alpha=I(.4)) +
   scale_fill_brewer(palette="Greens") +
-  #scale_fill_manual(values=c("#7F008A", "#B700C4", "#EA00FF", "#C949FF")) +
   ggtitle(TeX("Histograma de promedios $\\bar{X}_{2},\\bar{X}_{5}, \\bar{X}_{30}, \\bar{X}_{500}$ de muestras uniformes $X_i$")) +
   theme(plot.title = element_text(hjust = 0.9), legend.position=c(0.85,0.8)) +
   labs(x=TeX("Muestras $\\\\bar{X}_{2}_i,\\, \\bar{X}_{5}_i\\, \\bar{X}_{30}_i\\, \\bar{X}_{500}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") +
   scale_x_continuous(limits=c(-.1,1.1)) +
   labs(fill="Tamaño")
 
-# Ahora comparamos distintos tamaÃ±os de muestras con los promedios fijos (con histogramas y con boxplots)
 
+#################### ITEM E (PARTE 2) ####################
+
+# Ahora comparamos distintos tamaÃ±os de muestras con los promedios fijos (con histogramas y con boxplots)
 mayores1 <- e
 mayores2 <- generar_promedios_uniformes(500, 2000)
 mayores3 <- generar_promedios_uniformes(500, 4000)
@@ -206,28 +207,46 @@ mayores4 <- generar_promedios_uniformes(500, 8000)
 mayores5 <- generar_promedios_uniformes(500, 16000)
 mayores6 <- generar_promedios_uniformes(500, 32000)
 
-mayores <- data.frame(mayores1, mayores2, mayores3, mayores4, mayores5, mayores6)
+# Make data frame
+mayores.df <- data.frame(Tamaño = c(rep(1000, 1000),
+                                    rep(2000, 2000),
+                                    rep(4000, 4000),
+                                    rep(8000, 8000),
+                                    rep(16000, 16000),
+                                    rep(32000, 32000)),
+                         data = c(mayores1,
+                                  mayores2,
+                                  mayores3,
+                                  mayores4,
+                                  mayores5,
+                                  mayores6),
+                         TamañoStr = c(rep("1000", 1000),
+                                       rep("2000", 2000),
+                                       rep("4000", 4000),
+                                       rep("8000", 8000),
+                                       rep("16000", 16000),
+                                       rep("32000", 32000)))
 
-colnames(mayores) <- c("m=1000", "m=2000", "m=4000", "m=8000", "m=16000", "m=32000")
+# Now plot histograms in several subplots with the same scale
+hmay <- ggplot(mayores.df, aes(x=data, fill=Tamaño, after_stat(density)))
+hmay + geom_histogram(breaks=seq(min(mayores.df$data), max(mayores.df$data), length.out=21),
+                    fill=I("#1ee6cb"), 
+                    col=I("black"),
+                    alpha=I(.4)) +
+  facet_grid(. ~ Tamaño) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad")
+# Save with width 888, height 350 :)
 
-par(mfrow = c(2, 3))
-
-# Ponerles color, titulo y nombre a los ejes de los histogramas
-hist(mayores1, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
-hist(mayores3, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
-hist(mayores5, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
-hist(mayores2, freq = F, ylim =c (0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
-hist(mayores4, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
-hist(mayores6, freq = F, ylim = c(0, 30), xlim = c(0.44, 0.56), breaks = seq(0.44, 0.56, by = 0.0125))
-
-par(mfrow = c(1, 1))
-
-boxplot(mayores)
-
-# No se si sirven estas lineas.. pero bueno xD
-abline(col = "red", h = 0.49)
-abline(col = "red", h = 0.5)
-abline(col = "red", h = 0.51)
+# Then make a boxplot with all of them in the same scale
+bmay <- ggplot(mayores.df, aes(x=fct_reorder(TamañoStr,Tamaño), y=data, group=Tamaño)) + 
+  geom_boxplot(aes(fill=fct_reorder(TamañoStr,Tamaño))) +
+  scale_fill_brewer(palette="Spectral") +
+  ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  theme(plot.title = element_text(hjust = 0.5))
+bmay
 
 # Desde 1000 en adelante los histogramas son similares, si vamos a los boxplots son similares, pero los de mayor numero de muestras contienen mÃ¡s outliers, lo cual es obvio ya que mientras mÃ¡s muestras se tomen, mayor es la cantidad de datos que se pueden salir de los parÃ¡metros normales.
 
@@ -240,24 +259,46 @@ menores4 <- generar_promedios_uniformes(500, 100)
 menores5 <- generar_promedios_uniformes(500, 500)
 menores6 <- generar_promedios_uniformes(500, 1000)
 
-par(mfrow = c(2, 3))
+# Make data frame
+menores.df <- data.frame(Tamaño = c(rep(5, 5),
+                                    rep(10, 10),
+                                    rep(50, 50),
+                                    rep(100, 100),
+                                    rep(500, 500),
+                                    rep(1000, 1000)),
+                         data = c(menores1,
+                                  menores2,
+                                  menores3,
+                                  menores4,
+                                  menores5,
+                                  menores6),
+                         TamañoStr = c(rep("5", 5),
+                                       rep("10", 10),
+                                       rep("50", 50),
+                                       rep("100", 100),
+                                       rep("500", 500),
+                                       rep("1000", 1000)))
 
-# Ponerles color, titulo y nombre a los ejes de los histogramas
-hist(menores1, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
-hist(menores2, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
-hist(menores3, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
-hist(menores4, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
-hist(menores5, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
-hist(menores6, freq = F, ylim = c(0, 35), xlim = c(0.44, 0.56))
+# Now plot histograms in several subplots with the same scale
+hmen <- ggplot(menores.df, aes(x=data, fill=Tamaño, after_stat(density)))
+hmen + geom_histogram(breaks=seq(min(menores.df$data), max(menores.df$data), length.out=21),
+                      fill=I("#1ee6cb"), 
+                      col=I("black"),
+                      alpha=I(.4)) +
+  facet_grid(. ~ Tamaño) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad")
+# Save with width 888, height 350 :)
 
-menores <- data.frame(menores1, menores2, menores3, menores4, menores5, menores6)
-
-colnames(menores) <- c("m=5", "m=10", "m=50", "m=100", "m=500", "m=1000")
-
-par(mfrow = c(1, 1))
-
-boxplot(menores)
-
+# Then make a boxplot with all of them in the same scale
+bmen <- ggplot(menores.df, aes(x=fct_reorder(TamañoStr,Tamaño), y=data, group=Tamaño)) + 
+  geom_boxplot(aes(fill=fct_reorder(TamañoStr,Tamaño))) +
+  scale_fill_brewer(palette="Spectral") +
+  ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  theme(plot.title = element_text(hjust = 0.5))
+bmen
 
 #################### ITEM F ####################
 
