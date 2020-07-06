@@ -403,6 +403,10 @@ norm.df = data.frame(x = rep(seq(-4, 4, length.out=1000),6),
                      size = factor(rep(c(1,2,5,30,500,1200), each=1000)),
                      line.size = rep(rep(1, length(seq(-4,4,length.out=1000))),6))
 
+# Comparo los histogramas de las estandarizaciones contra la N(0,1)
+
+# Le puse au a la variable ('a' del item, y 'u' de que vino de las uniformes, porque despues tenemos las que vienen de las cauchys)
+
 # Now plot histograms in several subplots with the same scale
 hg <- ggplot(g.df, aes(x=data, fill=size, after_stat(density)))
 hg + geom_histogram(breaks=seq(-4, 4, 0.5),
@@ -416,41 +420,25 @@ hg + geom_histogram(breaks=seq(-4, 4, 0.5),
   geom_line(norm.df, mapping=aes(x=x, y=y, group=size), color='purple', size=1.5, alpha=0.8)
 # Save with width 888, height 350 :)
 
-par(mfrow = c(2, 3))
-
-# Comparo los histogramas de las estandarizaciones contra la N(0,1)
-
-# Le puse au a la variable ('a' del item, y 'u' de que vino de las uniformes, porque despues tenemos las que vienen de las cauchys)
-hist(a_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=1 normalizado", xlab = "au1...au1000", ylab = "Densidad", col = "#66B2FF")
-curve(col = "red", dnorm(x), add = T)
-
-hist(b_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=2 normalizado", xlab = "bu1...bu1000", ylab = "Densidad", col = "#66B2FF")
-curve(col = "red", dnorm(x), add = T)
-
-hist(c_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=5 normalizado", xlab = "cu1...cu1000", ylab = "Densidad", col = "#66B2FF")
-curve(col = "red", dnorm(x), add = T)
-
-hist(d_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=30 normalizado", xlab = "du1...du1000", ylab = "Densidad", col = "#66B2FF")
-curve(col = "red", dnorm(x), add = T)
-
-hist(e_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=500 normalizado", xlab = "eu1...eu1000", ylab = "Densidad", col = "#66B2FF")
-curve(col = "red", dnorm(x), add = T)
-
-hist(f_n, freq = F, xlim = c(-4, 4), breaks = seq(-4, 4, by = 0.5), ylim = c(0, 0.5), main = "n=1200 normalizado", xlab = "fu1...fu1000", ylab = "Densidad", col = "#66B2FF")
-curve(col = "red", dnorm(x), add = T)
-
-par(mfrow=c(1, 1))
-
+# Genero una muestra de N(0,1) para comparar con las estandarizaciones pero ahora con boxplots
 set.seed(7)
-normal_posta <- rnorm(1000) # Genero una muestra de N(0,1) para comparar con las estandarizaciones pero ahora con boxplots
 
-uniformes_normalizadas <- data.frame(normal_posta, a_n, b_n, c_n, d_n, e_n, f_n)
-colnames(uniformes_normalizadas) <- c("normal", "n=1", "n=2", "n=5", "n=30", "n=500", "n=1200")
+gn.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200,2000), each=1000)), 
+                   sizeStr = factor(rep(c("1","2","5","30","500","1200","N(0,1)"), each=1000)), 
+                   data = c(a_n,b_n,c_n,d_n,e_n,f_n,rnorm(1000)))
 
-boxplot(uniformes_normalizadas, col = c("yellow", rep("#66B2FF", times = 6)), main = "Boxplot Normal vs Estandarizaciones")
-abline(col = "red", h= 0.6744898) # tercer cuartil de N(0,1)
-abline(col = "red", h= -0.6744898) # primer cuartil de N(0,1)
-abline(col = "red", h= 0) # segundo cuartil - mediana de N(0,1)
+# Grafico los boxplots
+bgn <- ggplot(gn.df, aes(x=size, y=data, group=sizeStr)) + 
+  geom_boxplot(aes(fill=size), alpha=0.5) +
+  scale_fill_brewer(palette="YlGnBu") +
+  ggtitle(TeX("Normal $N(0,1)$ vs Promedio $\\bar{X}_{n}$ de muestra uniforme $X_i \\sim U(0,1)$")) +
+  labs(x=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="n") +
+  theme(plot.title = element_text(hjust = 0.4)) +
+  geom_hline(yintercept=qnorm(.75), color="red") + # tercer cuartil de N(0,1)
+  geom_hline(yintercept=qnorm(.5), color="red") + # segundo cuartil - mediana de N(0,1)
+  geom_hline(yintercept=qnorm(.25), color="red") # primer cuartil de N(0,1)
+bgn
+# OJO QUE A ESTE LO EDITÉ MÁS TARDE, JE
 
 #################### ITEM H ####################
 
