@@ -240,7 +240,7 @@ bmay <- ggplot(mayores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size))
   geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
   scale_fill_brewer(palette="Spectral") +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
-  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  labs(y=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), x=TeX("Tamaño ó \\textit{size}"), fill="Tamaño") +
   theme(plot.title = element_text(hjust = 0.5))
 bmay
 
@@ -283,7 +283,7 @@ bmen <- ggplot(menores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size))
   geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
   scale_fill_brewer(palette="Spectral", direction=-1) +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
-  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  labs(y=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), x=TeX("Tamaño ó \\textit{size}"), fill="Tamaño") +
   theme(plot.title = element_text(hjust = 0.5))
 bmen
 
@@ -330,7 +330,7 @@ bf <- ggplot(fedcb.df, aes(x=size, y=data, group=size)) +
   geom_boxplot(aes(fill=size), alpha=0.5) +
   scale_fill_brewer(palette="YlOrRd") +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{n}$ de muestra uniforme $X_1,...,X_{n}$")) +
-  labs(x=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="n") +
+  labs(y=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), x=TeX("Cantidad de observaciones o \\textit{n}"), fill="n") +
   theme(plot.title = element_text(hjust = 0.5))
   bf
 
@@ -416,7 +416,7 @@ bgn <- ggplot(gn.df, aes(x=size, y=data, group=sizeStr)) +
   geom_boxplot(aes(fill=size), alpha=0.5) +
   scale_fill_brewer(palette="YlGnBu") +
   ggtitle(TeX("Normal $N(0,1)$ vs Promedio $\\bar{X}_{n}$ de muestra uniforme $X_i \\sim U(0,1)$")) +
-  labs(x=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="n") +
+  labs(y=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), x=TeX("Cantidad de observaciones o \\textit{n}"), fill="n") +
   theme(plot.title = element_text(hjust = 0.4)) +
   geom_hline(yintercept=qnorm(.75), color="red") + # tercer cuartil de N(0,1)
   geom_hline(yintercept=qnorm(.5), color="red") + # segundo cuartil - mediana de N(0,1)
@@ -543,7 +543,7 @@ bcmay <- ggplot(cmayores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size
   geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
   scale_fill_brewer(palette="Spectral") +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra de Cauchy $X_1,...,X_{500}$")) +
-  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  labs(y=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), x=TeX("Tamaño ó \\textit{size}"), fill="Tamaño") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_y_continuous(limits=c(-15,15))
 bcmay
@@ -591,7 +591,7 @@ bcmen <- ggplot(cmenores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size
   geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
   scale_fill_brewer(palette="Spectral", direction=-1) +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra de Cauchy $X_1,...,X_{500}$")) +
-  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
+  labs(y=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), x=TeX("Tamaño ó \\textit{size}"), fill="Tamaño") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_y_continuous(limits=c(-15,15))
 bcmen
@@ -626,11 +626,12 @@ cfedcba.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)),
 # Realizamos qqnorm para los seis conjuntos de datos
 cqqf <- ggplot(cfedcba.df, aes(sample=data, color=size, group=size))
 cqqf + geom_qq(alpha=1) + 
-  facet_grid(size ~ .) +
+  facet_grid(. ~ size) +
   scale_color_brewer(palette="YlOrRd") +
   ggtitle(TeX("QQnorm para promedio $\\bar{X}_{n}$ de muestra de Cauchy $X_1,...,X_{n}$")) +
   theme(plot.title = element_text(hjust = 0.3)) +
-  labs(x="Cuantiles teóricos", y=TeX("Cuantiles de la muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), color="n")
+  labs(x="Cuantiles teóricos", y=TeX("Cuantiles de la muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), color="n") +
+  scale_y_continuous(limits=c(-50,50))
 # Save with width 888, height 350 :) 
 
 #par(mfrow = c(2, 3))
