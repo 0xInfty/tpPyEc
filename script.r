@@ -213,11 +213,11 @@ mayores6 <- generar_promedios_uniformes(500, 32000)
 
 # Make data frame
 mayores.df <- data.frame(size = c(rep(1000, 1000),
-                                    rep(2000, 2000),
-                                    rep(4000, 4000),
-                                    rep(8000, 8000),
-                                    rep(16000, 16000),
-                                    rep(32000, 32000)),
+                                  rep(2000, 2000),
+                                  rep(4000, 4000),
+                                  rep(8000, 8000),
+                                  rep(16000, 16000),
+                                  rep(32000, 32000)),
                          data = c(mayores1,
                                   mayores2,
                                   mayores3,
@@ -225,11 +225,11 @@ mayores.df <- data.frame(size = c(rep(1000, 1000),
                                   mayores5,
                                   mayores6),
                          sizeStr = c(rep("1000", 1000),
-                                       rep("2000", 2000),
-                                       rep("4000", 4000),
-                                       rep("8000", 8000),
-                                       rep("16000", 16000),
-                                       rep("32000", 32000)))
+                                     rep("2000", 2000),
+                                     rep("4000", 4000),
+                                     rep("8000", 8000),
+                                     rep("16000", 16000),
+                                     rep("32000", 32000)))
 
 # Now plot histograms in several subplots with the same scale
 hmay <- ggplot(mayores.df, aes(x=data, fill=fct_reorder(sizeStr,size), after_stat(density)))
@@ -264,11 +264,11 @@ menores6 <- generar_promedios_uniformes(500, 1000)
 
 # Make data frame
 menores.df <- data.frame(size = c(rep(5, 5),
-                                    rep(10, 10),
-                                    rep(50, 50),
-                                    rep(100, 100),
-                                    rep(500, 500),
-                                    rep(1000, 1000)),
+                                  rep(10, 10),
+                                  rep(50, 50),
+                                  rep(100, 100),
+                                  rep(500, 500),
+                                  rep(1000, 1000)),
                          data = c(menores1,
                                   menores2,
                                   menores3,
@@ -344,14 +344,13 @@ hfedcb + geom_histogram(breaks=seq(0,1,.1),
 # Grafico los boxplots
 bf <- ggplot(fedcb.df, aes(x=size, y=data, group=size)) + 
   geom_boxplot(aes(fill=size), alpha=0.5) +
-  scale_fill_brewer(palette="PRGn") +
+  scale_fill_brewer(palette="YlOrRd") +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{n}$ de muestra uniforme $X_1,...,X_{n}$")) +
   labs(x=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="n") +
   theme(plot.title = element_text(hjust = 0.5))
   bf
 
 # Calculemos la media y varianza muestral para cada conjunto de datos
-
 media_a <- mean(a)
 varianza_a <- varianza(a)
 
@@ -384,6 +383,21 @@ qqnorm(e, main = "QQPlot Normal n=500", ylim = c(0.3, 0.7))
 qqnorm(f, main = "QQPlot Normal n=1200", ylim = c(0.3, 0.7))
 
 par(mfrow = c(1, 1))
+
+# Make data frame for it all
+fedcba.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)), 
+                       sizeStr = factor(rep(c("1","2","5","30","500","1200"), each=1000)), 
+                       data = c(a,b,c,d,e,f))
+
+# Now make qqplots all in the same scale
+qqf <- ggplot(fedcba.df, aes(sample=data, color=size, group=size))
+qqf + geom_qq(alpha=1) + 
+  facet_grid(size ~ .) +
+  scale_color_brewer(palette="YlOrRd") +
+  ggtitle(TeX("QQnorm para promedio $\\bar{X}_{n}$ de muestra uniforme $X_1,...,X_{n}$")) +
+  theme(plot.title = element_text(hjust = 0.3)) +
+  labs(x="Cuantiles teóricos", y=TeX("Cuantiles de la muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), color="n")
+# Save with width 888, height 350 :) 
 
 #################### ITEM G ####################
 
