@@ -204,26 +204,18 @@ hedcb + geom_histogram(breaks=seq(0,1,.1),
 #################### ITEM E (PARTE 2) ####################
 
 # Ahora comparamos distintos tama√±os de muestras con los promedios fijos (con histogramas y con boxplots)
-mayores1 <- e
-mayores2 <- generar_promedios_uniformes(500, 2000)
-mayores3 <- generar_promedios_uniformes(500, 4000)
-mayores4 <- generar_promedios_uniformes(500, 8000)
-mayores5 <- generar_promedios_uniformes(500, 16000)
-mayores6 <- generar_promedios_uniformes(500, 32000)
-
-# Make data frame
 mayores.df <- data.frame(size = c(rep(1000, 1000),
                                   rep(2000, 2000),
                                   rep(4000, 4000),
                                   rep(8000, 8000),
                                   rep(16000, 16000),
                                   rep(32000, 32000)),
-                         data = c(mayores1,
-                                  mayores2,
-                                  mayores3,
-                                  mayores4,
-                                  mayores5,
-                                  mayores6),
+                         data = c(e,
+                                  generar_promedios_uniformes(500, 2000),
+                                  generar_promedios_uniformes(500, 4000),
+                                  generar_promedios_uniformes(500, 8000),
+                                  generar_promedios_uniformes(500, 16000),
+                                  generar_promedios_uniformes(500, 32000)),
                          sizeStr = c(rep("1000", 1000),
                                      rep("2000", 2000),
                                      rep("4000", 4000),
@@ -255,26 +247,18 @@ bmay
 # Desde 1000 en adelante los histogramas son similares, si vamos a los boxplots son similares, pero los de mayor numero de muestras contienen m√É¬°s outliers, lo cual es obvio ya que mientras m√É¬°s muestras se tomen, mayor es la cantidad de datos que se pueden salir de los par√É¬°metros normales.
 
 # Pero veamos que ocurre con muestras desde 5 hasta 1000:
-menores1 <- generar_promedios_uniformes(500, 5)
-menores2 <- generar_promedios_uniformes(500, 10)
-menores3 <- generar_promedios_uniformes(500, 50)
-menores4 <- generar_promedios_uniformes(500, 100)
-menores5 <- generar_promedios_uniformes(500, 500)
-menores6 <- generar_promedios_uniformes(500, 1000)
-
-# Make data frame
 menores.df <- data.frame(size = c(rep(5, 5),
                                   rep(10, 10),
                                   rep(50, 50),
                                   rep(100, 100),
                                   rep(500, 500),
                                   rep(1000, 1000)),
-                         data = c(menores1,
-                                  menores2,
-                                  menores3,
-                                  menores4,
-                                  menores5,
-                                  menores6),
+                         data = c(generar_promedios_uniformes(500, 5),
+                                  generar_promedios_uniformes(500, 10),
+                                  generar_promedios_uniformes(500, 50),
+                                  generar_promedios_uniformes(500, 100),
+                                  generar_promedios_uniformes(500, 500),
+                                  generar_promedios_uniformes(500, 1000)),
                          sizeStr = c(rep("5", 5),
                                        rep("10", 10),
                                        rep("50", 50),
@@ -440,311 +424,179 @@ bgn <- ggplot(gn.df, aes(x=size, y=data, group=sizeStr)) +
 bgn
 # OJO QUE A ESTE LO EDIT… M¡S TARDE, JE
 
-#################### ITEM H ####################
+#################### ITEM H (ITEMS A-D) ####################
 
 # FALTA HACER EL e Y EL f CON LA DENSIDAD DE CAUCHY, EL PUNTO g NO TIENE SENTIDO YA QUE LA CAUCHY NO CUENTA CON ESPERANZA NI VARIANZA FINITAS.
 # YA HAY FUNCION PARA GENERAR LAS CAUCHYS (EST√É¬Å EN LAS FUNCIONES AUXILIARES), AS√É¬ç QUE RESTA GENERAR CON ESA FUNCION LOS PROMEDIOS QUE PIDEN, HACER LOS GRAFICOS Y COMPARAR.
 
+# Generate sample
 set.seed(8)
-
 ca <- generar_promedios_cauchy(1, 1000)
-
-hca <- hist(podar(ca, 2), # Podo el 2% de los datos mas grandes y mas chicos
-           freq = FALSE,
-           main = "Histograma de muestra cauchy",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           ylim = c(0,0.2))
-curve(dcauchy(x), add = T, col = "red")
-
-
 set.seed(9)
-
 cb <- generar_promedios_cauchy(2, 1000)
-
-hcb <- hist(podar(cb, 2),
-           freq = FALSE,
-           main = "Histograma de promedio de dos cauchy",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           ylim = c(0, 0.2))
-
-
 set.seed(10)
-
 cc <- generar_promedios_cauchy(5, 1000)
-
-par(mfrow = c(1, 2)) # Divido la pantalla en dos filas para comparar los histogramas
-
-hcb <- hist(podar(cb, 2),
-           freq = FALSE,
-           main = "Histograma de promedio de dos cauchy",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           ylim = c(0, 0.2))
-
-hcc <- hist(podar(cc, 2),
-           freq = FALSE,
-           main = "Histograma de promedio de cinco cauchy",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           ylim = c(0, 0.2))
-
-
 set.seed(11)
-
 cd <- generar_promedios_cauchy(30, 1000)
-
-par(mfrow = c(1, 2))
-
-hcc <- hist(podar(cc, 2),
-           freq = FALSE,
-           main = "Histograma de promedio de cinco cauchy",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           breaks = seq(-18, 18, by = 2),
-           ylim = c(0, 0.2))
-
-
-hcd <- hist(podar(cd, 2),
-           freq = FALSE,
-           main = "Histograma de promedio de treinta cauchy",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           breaks = seq(-18, 18, by = 2),
-           ylim = c(0, 0.2))
-
-
 set.seed(12)
-
 ce <- generar_promedios_cauchy(500, 1000)
+set.seed(13)
+cf <- generar_promedios_cauchy(1200, 1000)
 
-par(mfrow = c(1, 2))
-
+# Make data frames :)
+# cap.df = data.frame("data" = podar(ca, 2)) # Podo el 2% de los datos mas grandes y mas chicos
 # Si no se podan los datos hay outliers muy grandes que desvirtuan todo
 
-hcd <- hist(podar(cd, 2),
-           freq = FALSE,
-           main = "n = 30",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           breaks = seq(-18, 18, by = 2),
-           ylim = c(0, 0.2))
+ca.df = data.frame("data" = ca) # Podo el 2% de los datos mas grandes y mas chicos
+cb.df = data.frame("data" = cb)
+cc.df = data.frame("data" = cc)
+cd.df = data.frame("data" = cd)
+ce.df = data.frame("data" = ce)
+cf.df = data.frame("data" = cf)
 
+ac.density <- data.frame("density.x" = seq(-18,18,length.out=1000),
+                         "density.y" = dcauchy(seq(-18,18,length.out=1000)))
 
-hce <- hist(podar(ce, 2),
-           freq = FALSE,
-           main = "n = 500",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           breaks = seq(-18, 18, by = 2),
-           ylim = c(0, 0.2))
+# Now plot single full histogram, showing outliers
+hca <- ggplot(ca.df, aes(x=data, after_stat(density)))
+hca + geom_histogram(breaks=seq(min(ca),max(ca),length.out=21),
+                     fill=I("gold1"), 
+                     col=I("black"),
+                     alpha=I(.4)) +
+  ggtitle(TeX("Histograma completo de muestra de Cauchy $X_1,...X_{1000}$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $X_i \\forall i\\in \\[1,1000\\]$"), y="Densidad")
 
+# Now plot single histogram
+hca <- ggplot(ca.df, aes(x=data, after_stat(density)))
+hca + geom_histogram(breaks=seq(-18,18,length.out=21),
+                     fill=I("gold1"), 
+                     col=I("black"),
+                     alpha=I(.4)) +
+  ggtitle(TeX("Histograma de muestra de Cauchy $X_1,...X_{1000}$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $X_i \\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
+  geom_line(ac.density, mapping=aes(x=density.x, y=density.y), color='red', size=1)
 
-mayores1 <- ce
-mayores2 <- generar_promedios_cauchy(500, 2000)
-mayores3 <- generar_promedios_cauchy(500, 4000)
-mayores4 <- generar_promedios_cauchy(500, 8000)
-mayores5 <- generar_promedios_cauchy(500, 16000)
-mayores6 <- generar_promedios_cauchy(500, 32000)
+# Make data.frame
+hcall.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)), 
+                      sizeStr = factor(rep(c("1","2","5","30","500","1200"), each=1000)), 
+                      data = c(ca, cb, cc, cd, ce, cf))
+                      # data = c(podar(ca, 2), podar(cb, 2), podar(cc, 2), podar(cd, 2), podar(ce, 2), podar(cf, 2)))
+cauchy.df = data.frame(x = rep(seq(-10,10,length.out=1000),6),
+                       y = rep(dcauchy(seq(-10,10,length.out=1000)),6),
+                       size = factor(rep(c(1,2,5,30,500,1200), each=1000)),
+                       line.size = rep(rep(1, 1000),6))
 
-mayores <- data.frame(podar(mayores1, 2), podar(mayores2, 2), podar(mayores3, 2), podar(mayores4, 2), podar(mayores5, 2), podar(mayores6, 2))
+# Now plot histograms in several subplots with the same scale
+hcall <- ggplot(hcall.df, aes(x=data, fill=size, after_stat(density)))
+hcall + geom_histogram(breaks=seq(-10,10,length.out=21),
+                       col=I("black"),
+                       alpha=I(.6)) +
+  facet_grid(size ~ .) +
+  scale_fill_brewer(palette="Purples") +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{n}$ de muestra de Cauchy $X_1,...,X_{n}$")) +
+  theme(plot.title = element_text(hjust = 0.3)) +
+  labs(x=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="TamaÒo") +
+  geom_line(cauchy.df, mapping=aes(x=x, y=y, group=size), color='red', size=0.8)
+# Save with width 888, height 350 :)
 
-colnames(mayores) <- c("m=1000", "m=2000", "m=4000", "m=8000", "m=16000", "m=32000")
+# Vemos que los histogramas son todos muy similares, lo que da a entender que con esta distribucion no ocurre que el promedio se va concentrando en la media como si ocurria con las U(0,1). Ademas hay que notar que no tiene media definida.
 
-par(mfrow = c(2, 3))
+#################### ITEM H (ITEMS E) ####################
 
-# Ponerles titulo y nombre a los ejes de los histogramas
+# Ahora comparamos distintos tama√±os de muestras con los promedios fijos (con histogramas y con boxplots)
+set.seed(14)
+cmayores.df <- data.frame(size = c(rep(1000, 1000),
+                                   rep(2000, 2000),
+                                   rep(4000, 4000),
+                                   rep(8000, 8000),
+                                   rep(16000, 16000),
+                                   rep(32000, 32000)),
+                         data = c(ce,
+                                  generar_promedios_cauchy(500, 2000),
+                                  generar_promedios_cauchy(500, 4000),
+                                  generar_promedios_cauchy(500, 8000),
+                                  generar_promedios_cauchy(500, 16000),
+                                  generar_promedios_cauchy(500, 32000)),
+                         sizeStr = c(rep("1000", 1000),
+                                     rep("2000", 2000),
+                                     rep("4000", 4000),
+                                     rep("8000", 8000),
+                                     rep("16000", 16000),
+                                     rep("32000", 32000)))
 
-hist(podar(mayores1, 2),
-     xlim = c(-18, 18),
-     breaks = seq(-18, 18, by = 2),
-     ylim = c(0,0.2),
-     col = "#66B2FF",
-     freq = F)
+# Now plot histograms in several subplots with the same scale
+hcmay <- ggplot(cmayores.df, aes(x=data, fill=fct_reorder(sizeStr,size), after_stat(density)))
+hcmay + geom_histogram(breaks=seq(-15,15,length.out=21),
+                       col=I("black"),
+                       alpha=I(.4)) +
+  facet_grid(. ~ size) +
+  scale_fill_brewer(palette="Spectral") +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra de Cauchy $X_1,...,X_{500}$")) +
+  theme(plot.title = element_text(hjust = 0.3)) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="TamaÒo")
+# Save with width 888, height 350 :)
 
-hist(podar(mayores2, 2),
-     xlim = c(-18, 18),
-     breaks = seq(-18, 18, by = 2),
-     ylim = c(0,0.2),
-     col = "#66B2FF",
-     freq = F)
-
-hist(podar(mayores3, 2),
-     xlim = c(-18, 18),
-     breaks = seq(-18, 18, by = 2),
-     ylim = c(0,0.2),
-     col = "#66B2FF",
-     freq = F)
-
-hist(podar(mayores4, 2),
-     xlim = c(-18, 18),
-     breaks = seq(-18, 18, by = 2),
-     ylim = c(0,0.2),
-     col = "#66B2FF",
-     freq = F)
-
-hist(podar(mayores5, 2),
-     xlim = c(-18, 18),
-     breaks = seq(-18, 18, by = 2),
-     ylim = c(0,0.2),
-     col = "#66B2FF",
-     freq = F)
-
-hist(podar(mayores6, 2),
-     xlim = c(-18, 18),
-     breaks = seq(-18, 18, by = 2),
-     ylim = c(0,0.2),
-     col = "#66B2FF",
-     freq = F)
+# Then make a boxplot with all of them in the same scale
+bcmay <- ggplot(cmayores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size)) + 
+  geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
+  scale_fill_brewer(palette="Spectral") +
+  ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra de Cauchy $X_1,...,X_{500}$")) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="TamaÒo") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(limits=c(-15,15))
+bcmay
 
 # Vemos que a medida que crece el numero de muestras, las colas se van agrandando muy de a poco.
 # Tambien aparecen muchos mas outliers, pero para que no desvirtuen los graficos, estos fueron podados.
 
-
-par(mfrow = c(1, 1))
-
-boxplot(mayores)
-
 # Observamos que a medida que crece la muestra considerada, aumenta la cantidad de outliers, pero las distancias intercuartiles se mantienen "constantes"
 
 # Analizamos lo que ocurre cuando aumenta la cantidad de muestras a partir de un m chico (m=5)
+set.seed(15)
+cmenores.df <- data.frame(size = c(rep(5, 5),
+                                   rep(10, 10),
+                                   rep(50, 50),
+                                   rep(100, 100),
+                                   rep(500, 500),
+                                   rep(1000, 1000)),
+                          data = c(generar_promedios_cauchy(500, 5),
+                                   generar_promedios_cauchy(500, 10),
+                                   generar_promedios_cauchy(500, 50),
+                                   generar_promedios_cauchy(500, 100),
+                                   generar_promedios_cauchy(500, 500),
+                                   generar_promedios_cauchy(500, 1000)),
+                          sizeStr = c(rep("1000", 5),
+                                      rep("2000", 10),
+                                      rep("4000", 50),
+                                      rep("8000", 100),
+                                      rep("16000", 500),
+                                      rep("32000", 1000)))
 
-menores1 <- generar_promedios_cauchy(500, 5)
-menores2 <- generar_promedios_cauchy(500, 10)
-menores3 <- generar_promedios_cauchy(500, 50)
-menores4 <- generar_promedios_cauchy(500, 100)
-menores5 <- generar_promedios_cauchy(500, 500)
-menores6 <- generar_promedios_cauchy(500, 1000)
+# Now plot histograms in several subplots with the same scale
+hcmen <- ggplot(cmenores.df, aes(x=data, fill=fct_reorder(sizeStr,size), after_stat(density)))
+hcmen + geom_histogram(breaks=seq(-15,15,length.out=21),
+                       col=I("black"),
+                       alpha=I(.4)) +
+  facet_grid(. ~ size) +
+  scale_fill_brewer(palette="Spectral", direction=-1) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra de Cauchy $X_1,...,X_{500}$")) +
+  theme(plot.title = element_text(hjust = 0.3)) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="TamaÒo")
+# Save with width 888, height 350 :)
 
-par(mfrow = c(2, 3))
+# Then make a boxplot with all of them in the same scale
+bcmen <- ggplot(cmenores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size)) + 
+  geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
+  scale_fill_brewer(palette="Spectral", direction=-1) +
+  ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra de Cauchy $X_1,...,X_{500}$")) +
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="TamaÒo") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(limits=c(-15,15))
+bcmen
 
-hist(menores1[menores1 > -15 & menores1 < 15],
-     freq = F,
-     xlim = c(-15, 15),
-     breaks = seq(-15, 15, by = 2.5),
-     ylim = c(0, 0.25),
-     ylab = "Densidad",
-     xlab = "Muestra x1...x5",
-     col = "#66B2FF",
-     main = "")
-curve(col = "red", dcauchy(x), add = T)
-
-hist(menores2[menores2 > -15 & menores2 < 15],
-     freq = F,
-     xlim = c(-15, 15),
-     breaks = seq(-15, 15, by = 2.5),
-     ylim = c(0, 0.25),
-     ylab = "Densidad",
-     xlab = "Muestra x1...x5",
-     col = "#66B2FF",
-     main = "")
-curve(col = "red", dcauchy(x), add = T)
-
-hist(menores3[menores3 > -15 & menores3 < 15],
-     freq = F,
-     xlim = c(-15, 15),
-     breaks = seq(-15, 15, by = 2.5),
-     ylim = c(0, 0.25),
-     ylab = "Densidad",
-     xlab = "Muestra x1...x5",
-     col = "#66B2FF",
-     main = "")
-curve(col = "red", dcauchy(x), add = T)
-
-hist(menores4[menores4 > -15 & menores4 < 15],
-     freq = F,
-     xlim = c(-15, 15),
-     breaks = seq(-15, 15, by = 2.5),
-     ylim = c(0, 0.25),
-     ylab = "Densidad",
-     xlab = "Muestra x1...x5",
-     col = "#66B2FF",
-     main = "")
-curve(col = "red", dcauchy(x), add = T)
-
-hist(menores5[menores5 > -15 & menores5 < 15],
-     freq = F,
-     xlim = c(-15, 15),
-     breaks = seq(-15, 15, by = 2.5),
-     ylim = c(0, 0.25),
-     ylab = "Densidad",
-     xlab = "Muestra x1...x5",
-     col = "#66B2FF",
-     main = "")
-curve(col = "red", dcauchy(x), add = T)
-
-hist(menores6[menores6 > -15 & menores6 < 15],
-     freq = F,
-     xlim = c(-15, 15),
-     breaks = seq(-15, 15, by = 2.5),
-     ylim = c(0, 0.25),
-     ylab = "Densidad",
-     xlab = "Muestra x1...x5",
-     col = "#66B2FF",
-     main = "")
-curve(col = "red", dcauchy(x), add = T)
-
-
-menores <- data.frame(menores1, menores2, menores3, menores4, menores5, menores6)
-
-colnames(menores) <- c("m=5", "m=10", "m=50", "m=100", "m=500", "m=1000")
-
-par(mfrow = c(1, 1))
-
-boxplot(menores, ylim=c(-10,10))
-
-set.seed(13)
-
-cf <- generar_promedios_cauchy(1200, 1000)
-
-par(mfrow = c(1, 2))
-
-hce <- hist(podar(ce, 2),
-           freq = FALSE,
-           main = "n = 30",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           breaks = seq(-18, 18, by = 2),
-           ylim = c(0, 0.25))
-
-
-hcf <- hist(podar(cf, 2),
-           freq = FALSE,
-           main = "n = 500",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(-18, 18),
-           breaks = seq(-18, 18, by = 2),
-           ylim = c(0, 0.25))
-
-par(mfrow = c(1, 1))
-datos_cauchy <- data.frame(ca,cb,cc,cd,ce,cf)
-colnames(datos_cauchy) <- c("n=1", "n=2", "n=5", "n=30", "n=500", "n=1200")
-
-boxplot(datos_cauchy, main = "Boxplots de promedios de C[0,1]", ylim = c(-15, 15))
-
-# Vemos que los histogramas son todos muy similares, lo que da a entender que con esta distribucion no ocurre que el promedio se va concentrando en la media como si ocurria con las U(0,1). Ademas hay que notar que no tiene media definida.
-
+#################### ITEM H (ITEMS F) ####################
 
 media_ca <- mean(ca)
 varianza_ca <- varianza(ca)
