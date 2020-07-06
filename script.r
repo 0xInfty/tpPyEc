@@ -618,16 +618,28 @@ varianza_cf <- varianza(cf)
 
 # Tengamos en cuenta que estas medias y varianzas son muestrales. Las teoricas no existen y por eso no se parecen en nada las medias y varianzas a medida que crecen los promedios. No tienden a ningun valor.
 
-par(mfrow = c(2, 3))
+# Make data frame for it all
+cfedcba.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)), 
+                        sizeStr = factor(rep(c("1","2","5","30","500","1200"), each=1000)), 
+                        data = c(ca,cb,cc,cd,ce,cf))
 
-qqnorm(podar(ca, 2), main = "QQPlot Normal n=1")
-qqnorm(podar(cb, 2), main = "QQPlot Normal n=2")
-qqnorm(podar(cc, 2), main = "QQPlot Normal n=5")
-qqnorm(podar(cd, 2), main = "QQPlot Normal n=30")
-qqnorm(podar(ce, 2), main = "QQPlot Normal n=500")
-qqnorm(podar(cf, 2), main = "QQPlot Normal n=1200")
+# Realizamos qqnorm para los seis conjuntos de datos
+cqqf <- ggplot(cfedcba.df, aes(sample=data, color=size, group=size))
+cqqf + geom_qq(alpha=1) + 
+  facet_grid(size ~ .) +
+  scale_color_brewer(palette="YlOrRd") +
+  ggtitle(TeX("QQnorm para promedio $\\bar{X}_{n}$ de muestra de Cauchy $X_1,...,X_{n}$")) +
+  theme(plot.title = element_text(hjust = 0.3)) +
+  labs(x="Cuantiles teóricos", y=TeX("Cuantiles de la muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), color="n")
+# Save with width 888, height 350 :) 
 
-par(mfrow = c(1, 1))
+#par(mfrow = c(2, 3))
+#qqnorm(podar(ca, 2), main = "QQPlot Normal n=1")
+#qqnorm(podar(cb, 2), main = "QQPlot Normal n=2")
+#qqnorm(podar(cc, 2), main = "QQPlot Normal n=5")
+#qqnorm(podar(cd, 2), main = "QQPlot Normal n=30")
+#qqnorm(podar(ce, 2), main = "QQPlot Normal n=500")
+#qqnorm(podar(cf, 2), main = "QQPlot Normal n=1200")
+#par(mfrow = c(1, 1))
 
 # Estos resultados anteriores son esperables ya que las cauchy nunca van a tender a una N(0,1) como si ocurre con las uniformes. En el caso de las uniformes los qqnorm daban una recta porque habÃ­a mucha "correlacion" entre ambas distribuciones.
-
