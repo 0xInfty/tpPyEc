@@ -309,43 +309,46 @@ set.seed(5)
 
 f <- generar_promedios_uniformes(1200, 1000)
 
-par(mfrow = c(2, 1))
+# Make data frames :)
+f.df = data.frame("data" = f)
+fedcb.df = data.frame(size = factor(rep(c(2,5,30,500,1200), each=1000)), 
+                      sizeStr = factor(rep(c("2","5","30","500","1200"), each=1000)), 
+                      data = c(b,c,d,e,f))
 
-he <- hist(e,
-           freq = FALSE,
-           main = "Histograma de promedio de quinientas uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(0.44, 0.56),
-           breaks = seq(0.45, 0.55, by = 0.00625),
-           ylim = c(0, 50))
+# Now plot histogram
+hf <- ggplot(f.df, aes(x=data, after_stat(density)))
+hf + geom_histogram(breaks=seq(0,1,.05),
+                    fill=I("#d26df7"), 
+                    col=I("black"),
+                    alpha=I(.4)) +
+  ggtitle(TeX("Histograma de promedio $\\bar{X}_{1200}$ de muestra uniforme $X_1,...,X_{1200}$")) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x=TeX("Muestra $\\bar{X}_{1200}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
+  geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
+  scale_x_continuous(limits=c(-.1,1.1)) +
+  annotate("text", x=0.1, y=1.3, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
 
-abline(col = "red", h = max(he$density))
-
-hf <- hist(f,
-           freq = FALSE,
-           main = "Histograma de promedio de mil doscientas uniformes",
-           xlab = "Muestra x1...x1000",
-           ylab = "Densidad",
-           col = "#66B2FF",
-           xlim = c(0.44, 0.56),
-           breaks = seq(0.45, 0.55, by = 0.00625),
-           ylim = c(0, 50))
-
-abline(col = "red", h = max(hf$density))
-
-par(mfrow = c(1, 1))
+# Make one plot with all histograms
+hfedcb <- ggplot(fedcb.df, aes(x=data, fill=size, after_stat(density)))
+hfedcb + geom_histogram(breaks=seq(0,1,.1),
+                       col=I("black"),
+                       position="dodge",
+                       alpha=I(.4)) +
+  scale_fill_brewer(palette="Greens") +
+  ggtitle(TeX("Histograma de promedios $\\bar{X}_{2},\\bar{X}_{5}, \\bar{X}_{30}, \\bar{X}_{500}, \\bar{X}_{1200}$ de muestras uniformes $X_i$")) +
+  theme(plot.title = element_text(hjust = 0.9), legend.position=c(0.85,0.8)) +
+  labs(x=TeX("Muestras $\\\\bar{X}_{2}_i,\\, \\bar{X}_{5}_i,\\, \\bar{X}_{30}_i,\\, \\bar{X}_{500}_i,\\, \\bar{X}_{1200}_i\\forall i\\in \\[1,1000\\]$"), 
+       y="Densidad", fill="Tamaño") +
+  scale_x_continuous(limits=c(-.1,1.1))
 
 # Grafico los boxplots
-
-datos_uniformes <- data.frame(a,b,c,d,e,f)
-
-colnames(datos_uniformes) <- c("n=1", "n=2", "n=5", "n=30", "n=500", "n=1200")
-
-boxplot(datos_uniformes, main = "Boxplots de promedios de U[0,1]")
-
-abline(col = "red", h = 0.5)
+bf <- ggplot(fedcb.df, aes(x=size, y=data, group=size)) + 
+  geom_boxplot(aes(fill=size), alpha=0.5) +
+  scale_fill_brewer(palette="PRGn") +
+  ggtitle(TeX("Boxplots de promedio $\\bar{X}_{n}$ de muestra uniforme $X_1,...,X_{n}$")) +
+  labs(x=TeX("Muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="n") +
+  theme(plot.title = element_text(hjust = 0.5))
+  bf
 
 # Calculemos la media y varianza muestral para cada conjunto de datos
 
