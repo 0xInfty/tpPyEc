@@ -312,7 +312,7 @@ abline(col = "red", h = 0.5)
 # Calculemos la media y varianza muestral para cada conjunto de datos
 
 media_a <- mean(a)
-varianza_a <- varianza(a) # Usamos esta medida de varianza o usamos S^2 ?
+varianza_a <- varianza(a)
 
 media_b <- mean(b)
 varianza_b <- varianza(b)
@@ -659,4 +659,73 @@ colnames(menores) <- c("m=5", "m=10", "m=50", "m=100", "m=500", "m=1000")
 par(mfrow = c(1, 1))
 
 boxplot(menores, ylim=c(-10,10))
+
+set.seed(13)
+
+cf <- generar_promedios_cauchy(1200, 1000)
+
+par(mfrow = c(1, 2))
+
+hce <- hist(podar(ce, 2),
+           freq = FALSE,
+           main = "n = 30",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF",
+           xlim = c(-18, 18),
+           breaks = seq(-18, 18, by = 2),
+           ylim = c(0, 0.25))
+
+
+hcf <- hist(podar(cf, 2),
+           freq = FALSE,
+           main = "n = 500",
+           xlab = "Muestra x1...x1000",
+           ylab = "Densidad",
+           col = "#66B2FF",
+           xlim = c(-18, 18),
+           breaks = seq(-18, 18, by = 2),
+           ylim = c(0, 0.25))
+
+par(mfrow = c(1, 1))
+datos_cauchy <- data.frame(ca,cb,cc,cd,ce,cf)
+colnames(datos_cauchy) <- c("n=1", "n=2", "n=5", "n=30", "n=500", "n=1200")
+
+boxplot(datos_cauchy, main = "Boxplots de promedios de C[0,1]", ylim = c(-15, 15))
+
+# Vemos que los histogramas son todos muy similares, lo que da a entender que con esta distribucion no ocurre que el promedio se va concentrando en la media como si ocurria con las U(0,1). Ademas hay que notar que no tiene media definida.
+
+
+media_ca <- mean(ca)
+varianza_ca <- varianza(ca)
+
+media_cb <- mean(cb)
+varianza_cb <- varianza(cb)
+
+media_cc <- mean(cc)
+varianza_cc <- varianza(cc)
+
+media_cd <- mean(cd)
+varianza_cd <- varianza(cd)
+
+media_ce <- mean(ce)
+varianza_ce <- varianza(ce)
+
+media_cf <- mean(cf)
+varianza_cf <- varianza(cf)
+
+# Tengamos en cuenta que estas medias y varianzas son muestrales. Las teoricas no existen y por eso no se parecen en nada las medias y varianzas a medida que crecen los promedios. No tienden a ningun valor.
+
+par(mfrow = c(2, 3))
+
+qqnorm(podar(ca, 2), main = "QQPlot Normal n=1")
+qqnorm(podar(cb, 2), main = "QQPlot Normal n=2")
+qqnorm(podar(cc, 2), main = "QQPlot Normal n=5")
+qqnorm(podar(cd, 2), main = "QQPlot Normal n=30")
+qqnorm(podar(ce, 2), main = "QQPlot Normal n=500")
+qqnorm(podar(cf, 2), main = "QQPlot Normal n=1200")
+
+par(mfrow = c(1, 1))
+
+# Estos resultados anteriores son esperables ya que las cauchy nunca van a tender a una N(0,1) como si ocurre con las uniformes. En el caso de las uniformes los qqnorm daban una recta porque había mucha "correlacion" entre ambas distribuciones.
 
