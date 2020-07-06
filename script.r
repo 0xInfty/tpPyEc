@@ -107,7 +107,7 @@ hc + geom_histogram(breaks=seq(0,1,.05),
                     alpha=I(.4)) +
   ggtitle(TeX("Histograma de promedio $\\bar{X}_{5}$ de muestra uniforme $X_1,...,X_5$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $\\bar{X}_5_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="Tama�o") + 
+  labs(x=TeX("Muestra $\\bar{X}_5_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
   geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
   scale_x_continuous(limits=c(-.1,1.1)) +
   annotate("text", x=0.1, y=1.1, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
@@ -145,7 +145,7 @@ hd + geom_histogram(breaks=seq(0,1,.05),
                     alpha=I(.4)) +
   ggtitle(TeX("Histograma de promedio $\\bar{X}_{30}$ de muestra uniforme $X_1,...,X_{30}$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $\\bar{X}_{30}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="Tama�o") + 
+  labs(x=TeX("Muestra $\\bar{X}_{30}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
   geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
   scale_x_continuous(limits=c(-.1,1.1)) +
   annotate("text", x=0.1, y=1.3, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
@@ -177,13 +177,13 @@ edcb.df = data.frame(size = factor(rep(c(2,5,30,500), each=1000)),
 
 # Now plot histogram
 he <- ggplot(e.df, aes(x=data, after_stat(density)))
-he + geom_histogram(breaks=seq(0,1,.1),
+he + geom_histogram(breaks=seq(0,1,.05),
                     fill=I("#d26df7"), 
                     col=I("black"),
                     alpha=I(.4)) +
   ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad", fill="Tama�o") + 
+  labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,1000\\]$"), y="Densidad") + 
   geom_step(data=a.density, mapping=aes(density.x, density.y), color='red', size=1) + 
   scale_x_continuous(limits=c(-.1,1.1)) +
   annotate("text", x=0.1, y=1.3, label=TeX("$f(x)\\,=\\, $I$_{[0,1]}(x)$"), col="red")
@@ -255,7 +255,6 @@ bmay
 # Desde 1000 en adelante los histogramas son similares, si vamos a los boxplots son similares, pero los de mayor numero de muestras contienen mÃ¡s outliers, lo cual es obvio ya que mientras mÃ¡s muestras se tomen, mayor es la cantidad de datos que se pueden salir de los parÃ¡metros normales.
 
 # Pero veamos que ocurre con muestras desde 5 hasta 1000:
-
 menores1 <- generar_promedios_uniformes(500, 5)
 menores2 <- generar_promedios_uniformes(500, 10)
 menores3 <- generar_promedios_uniformes(500, 50)
