@@ -232,14 +232,14 @@ mayores.df <- data.frame(size = c(rep(1000, 1000),
                                        rep("32000", 32000)))
 
 # Now plot histograms in several subplots with the same scale
-hmay <- ggplot(mayores.df, aes(x=data, fill=size, after_stat(density)))
+hmay <- ggplot(mayores.df, aes(x=data, fill=fct_reorder(sizeStr,size), after_stat(density)))
 hmay + geom_histogram(breaks=seq(min(mayores.df$data), max(mayores.df$data), length.out=21),
-                    fill=I("#1ee6cb"), 
                     col=I("black"),
                     alpha=I(.4)) +
   facet_grid(. ~ size) +
+  scale_fill_brewer(palette="Spectral") +
   ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
-  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.title = element_text(hjust = 0.3)) +
   labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño")
 # Save with width 888, height 350 :)
 
@@ -283,21 +283,21 @@ menores.df <- data.frame(size = c(rep(5, 5),
                                        rep("1000", 1000)))
 
 # Now plot histograms in several subplots with the same scale
-hmen <- ggplot(menores.df, aes(x=data, fill=size, after_stat(density)))
+hmen <- ggplot(menores.df, aes(x=data, fill=fct_reorder(sizeStr,size), after_stat(density)))
 hmen + geom_histogram(breaks=seq(min(menores.df$data), max(menores.df$data), length.out=21),
-                      fill=I("#1ee6cb"), 
                       col=I("black"),
                       alpha=I(.4)) +
   facet_grid(. ~ size) +
+  scale_fill_brewer(palette="Spectral", direction=-1) +
   ggtitle(TeX("Histograma de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
-  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.title = element_text(hjust = 0.3)) +
   labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño")
 # Save with width 888, height 350 :)
 
 # Then make a boxplot with all of them in the same scale
 bmen <- ggplot(menores.df, aes(x=fct_reorder(sizeStr,size), y=data, group=size)) + 
   geom_boxplot(aes(fill=fct_reorder(sizeStr,size))) +
-  scale_fill_brewer(palette="Spectral") +
+  scale_fill_brewer(palette="Spectral", direction=-1) +
   ggtitle(TeX("Boxplots de promedio $\\bar{X}_{500}$ de muestra uniforme $X_1,...,X_{500}$")) +
   labs(x=TeX("Muestra $\\bar{X}_{500}_i\\forall i\\in \\[1,size\\]$"), y="Densidad", fill="Tamaño") +
   theme(plot.title = element_text(hjust = 0.5))
