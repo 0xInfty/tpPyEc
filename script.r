@@ -369,27 +369,12 @@ varianza_e <- varianza(e)
 media_f <- mean(f)
 varianza_f <- varianza(f)
 
-# Realizamos qqnorm para los seis conjuntos de datos
-
-# Ponerles lindos nombres en los ejes ("Cuantiles TeÃ³ricos" y "Cuantiles Muestrales" estarÃ¡ bien? O es muy literal la traducciÃ³n?)
-
-par(mfrow = c(2, 3))
-
-qqnorm(a, main = "QQPlot Normal n=1")
-qqnorm(b, main = "QQPlot Normal n=2")
-qqnorm(c, main = "QQPlot Normal n=5", ylim = c(0, 1))
-qqnorm(d, main = "QQPlot Normal n=30", ylim = c(0.3, 0.7))
-qqnorm(e, main = "QQPlot Normal n=500", ylim = c(0.3, 0.7))
-qqnorm(f, main = "QQPlot Normal n=1200", ylim = c(0.3, 0.7))
-
-par(mfrow = c(1, 1))
-
 # Make data frame for it all
 fedcba.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)), 
                        sizeStr = factor(rep(c("1","2","5","30","500","1200"), each=1000)), 
                        data = c(a,b,c,d,e,f))
 
-# Now make qqplots all in the same scale
+# Realizamos qqnorm para los seis conjuntos de datos
 qqf <- ggplot(fedcba.df, aes(sample=data, color=size, group=size))
 qqf + geom_qq(alpha=1) + 
   facet_grid(size ~ .) +
