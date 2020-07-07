@@ -361,11 +361,12 @@ fedcba.df = data.frame(size = factor(rep(c(1,2,5,30,500,1200), each=1000)),
 # Realizamos qqnorm para los seis conjuntos de datos
 qqf <- ggplot(fedcba.df, aes(sample=data, color=size, group=size))
 qqf + geom_qq(alpha=1) + 
-  facet_grid(size ~ .) +
+  facet_grid(. ~ size) +
   scale_color_brewer(palette="YlOrRd") +
   ggtitle(TeX("QQnorm para promedio $\\bar{X}_{n}$ de muestra uniforme $X_1,...,X_{n}$")) +
   theme(plot.title = element_text(hjust = 0.3)) +
-  labs(x="Cuantiles teóricos", y=TeX("Cuantiles de la muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), color="n")
+  labs(x="Cuantiles teóricos", y=TeX("Cuantiles de la muestra $\\bar{X}_{n}_i\\forall i\\in \\[1,1000\\]$"), color="n") +
+  scale_y_continuous(limits=c(0,1))
 # Save with width 888, height 350 :) 
 
 #################### ITEM G ####################
